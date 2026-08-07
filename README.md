@@ -53,14 +53,12 @@ as new markets resolve.
 
 ## Known rough edges
 
-- **Small samples reach the top.** The median ranked user has only 4 scored bets
-  and 1,519 of the 5,548 have exactly 2. The CI lower bound is supposed to punish
-  that, but the `eps` clipping in cell 19 undercuts it: when every one of a user's
-  scored bets lands on the `1 - 1e-6` bound, `stats.sem` goes to ~0, the interval
-  collapses to a point, and the lower bound equals the clipped value. The current
-  top entry has n=3 for exactly this reason. A minimum-bet threshold, or shrinking
-  toward the population mean, would be the fix. The banner prints n per row so the
-  ranking can be read with this in mind.
+- **Sample sizes are small and uneven.** The median ranked user has 4 scored bets
+  and 1,519 of the 5,548 have exactly 2, while the largest have several hundred.
+  The CI lower bound handles this as designed - the t-multiplier at n=3 is 4.303,
+  and no ranked user has a degenerate (zero-variance) interval - but a top entry
+  earned over 3 bets and one earned over 352 are different kinds of evidence. The
+  banner prints n per row so the ranking can be read with that in view.
 - **Topic selection is positional.** Cell 3 picks topics by hardcoded index into
   the members-sorted top 100, so a re-run selects whatever occupies those ranks
   that day rather than the same topics as a previous run.
